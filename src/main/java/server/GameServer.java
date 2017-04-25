@@ -21,7 +21,8 @@ public class GameServer {
 	private final static Map<String, Game> gameList = new HashMap<>();
 
 	public static void main(String[] args) throws Exception {
-		final HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+		final int port = Integer.valueOf(System.getenv("$PORT"));
+		final HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
 		server.createContext("/getGame", new GetGameHandler());
 		server.createContext("/createGame", new CreateGameHandler());
 		server.createContext("/updateGame", new UpdateGameHandler());

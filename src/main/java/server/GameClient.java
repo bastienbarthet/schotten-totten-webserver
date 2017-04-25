@@ -16,7 +16,7 @@ import com.boardgames.bastien.schotten_totten.model.Game;
 
 public class GameClient {
 
-	private final String serverUrl = "http://localhost:8000";
+	private final String serverUrl = "https://schotten-totten.herokuapp.com";//"http://localhost:8000";
 
 	public GameClient() {
 		//
@@ -36,7 +36,7 @@ public class GameClient {
 			throw new GameAlreadyExistsException();
 		} else {
 			// other error
-			throw new HttpException();
+			throw new HttpException(responseCreate.getStatusLine().getStatusCode() + "");
 		}
 	}
 
@@ -52,7 +52,7 @@ public class GameClient {
 			throw new GameDoNotExistException();
 		} else {
 			// other error
-			throw new HttpException();
+			throw new HttpException(responseGet.getStatusLine().getStatusCode() + "");
 		}
 	}
 	
@@ -77,18 +77,18 @@ public class GameClient {
 		final HttpResponse response = client.execute(post);
 		if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
 			// error
-			throw new HttpException();
+			throw new HttpException(response.getStatusLine().getStatusCode() + "");
 		}
 	}
 	
 	public void deleteGame(final String gameName) throws IOException, HttpException {
 		final HttpClient client = HttpClients.createDefault();
-		final HttpUriRequest requestGet = new HttpGet(serverUrl + "/deleteGame");
-		requestGet.addHeader("gameName", gameName);
-		final HttpResponse responseGet = client.execute(requestGet);
-		if (responseGet.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+		final HttpUriRequest request = new HttpGet(serverUrl + "/deleteGame");
+		request.addHeader("gameName", gameName);
+		final HttpResponse response = client.execute(request);
+		if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
 			// other error
-			throw new HttpException();
+			throw new HttpException(response.getStatusLine().getStatusCode() + "");
 		}
 	}
 		
