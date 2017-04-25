@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +36,8 @@ public class GameServer {
 	private static class PingHandler implements HttpHandler {
 		public void handle(final HttpExchange t) throws IOException {
 			try (final OutputStream os = t.getResponseBody()) {
-				final byte[] byteArray = "alive".getBytes();
+				final String responseContent = new Date().toString() + " - it is time to SCHOTTEN !!!!";
+				final byte[] byteArray = responseContent.getBytes();
 				System.out.println("Ping Alive.");
 				t.sendResponseHeaders(HttpStatus.SC_OK, byteArray.length);
 				os.write(byteArray);

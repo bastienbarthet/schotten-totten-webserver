@@ -16,10 +16,10 @@ import com.boardgames.bastien.schotten_totten.model.Game;
 
 public class GameClient {
 
-	private final String serverUrl = "https://schotten-totten.herokuapp.com";//"http://localhost:8000";
+	private final String serverUrl;// = "https://schotten-totten.herokuapp.com";//"http://localhost:8000";
 
-	public GameClient() {
-		//
+	public GameClient(final String url) {
+		serverUrl = url;
 	}
 
 
