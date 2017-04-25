@@ -1,1 +1,1 @@
-web: java -jar target/schotten-totten-webserver-0.0.1-SNAPSHOT.jar
+web: java $JAVA_OPTS -jar target/schotten-totten-webserver-0.0.1-SNAPSHOT.jar --port $PORT
