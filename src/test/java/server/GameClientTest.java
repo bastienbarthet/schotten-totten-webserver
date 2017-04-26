@@ -12,8 +12,8 @@ import com.boardgames.bastien.schotten_totten.model.Game;
 public class GameClientTest {
 
 	public static void main(final String[] args) {
-//		final GameClient client = new GameClient("https://schotten-totten.herokuapp.com");
-		final GameClient client = new GameClient("http://localhost:8000");
+		final GameClient client = new GameClient("https://schotten-totten.herokuapp.com");
+//		final GameClient client = new GameClient("http://localhost:8000");
 		try {
 			final Game game = new Game("P1", "P2");
 			client.createdGame("test1" + System.currentTimeMillis(), game);
