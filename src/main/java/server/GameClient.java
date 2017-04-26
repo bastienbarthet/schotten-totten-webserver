@@ -16,27 +16,26 @@ import com.boardgames.bastien.schotten_totten.model.Game;
 
 public class GameClient {
 
-	private final String serverUrl;// = "https://schotten-totten.herokuapp.com";//"http://localhost:8000";
+	private final String serverUrl;
 
 	public GameClient(final String url) {
 		serverUrl = url;
 	}
 
 
-	public Game createdGame(final String gameName) throws HttpException, IOException, GameAlreadyExistsException {
+	public void createdGame(final String gameName, final Game game) throws HttpException, IOException, GameAlreadyExistsException {
 		final HttpClient client = HttpClients.createDefault();
-		//create
-		final HttpUriRequest requestCreate = new HttpGet(serverUrl + "/createGame");
-		requestCreate.addHeader("gameName", gameName);
-		final HttpResponse responseCreate = client.execute(requestCreate);
-		if (responseCreate.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-			return ByteArrayUtils.inputStreamToGame(responseCreate.getEntity().getContent()); 
-		} else if (responseCreate.getStatusLine().getStatusCode() == HttpStatus.SC_FORBIDDEN) {
+		// post
+		final HttpPost post = new HttpPost(serverUrl + "/createGame");
+		post.addHeader("gameName", gameName);
+		post.setEntity(ByteArrayUtils.gameToByteArrayEntity(game));
+		final HttpResponse response = client.execute(post);
+		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_FORBIDDEN) {
 			// game already exist
 			throw new GameAlreadyExistsException();
-		} else {
+		} else if (response.getStatusLine().getStatusCode() == HttpStatus.SC_METHOD_FAILURE) {
 			// other error
-			throw new HttpException(responseCreate.getStatusLine().getStatusCode() + "");
+			throw new HttpException(response.getStatusLine().getStatusCode() + "");
 		}
 	}
 

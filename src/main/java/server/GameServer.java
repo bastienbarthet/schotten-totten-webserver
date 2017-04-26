@@ -1,6 +1,9 @@
 package server;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -8,10 +11,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpStatus;
 
-import com.boardgames.bastien.schotten_totten.exceptions.GameCreationException;
-import com.boardgames.bastien.schotten_totten.model.Game;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -19,7 +21,7 @@ import com.sun.net.httpserver.HttpServer;
 
 public class GameServer {
 
-	private final static Map<String, Game> gameList = new HashMap<>();
+	private final static Map<String, byte[]> gameList = new HashMap<>();
 
 	public static void main(String[] args) throws Exception {
 		final int port = Integer.valueOf(System.getenv("PORT"));
@@ -53,7 +55,7 @@ public class GameServer {
 				final String gameName = t.getRequestHeaders().getFirst("gameName");
 				if (gameList.containsKey(gameName)) {
 					System.out.println("Game " + gameName + " requested.");
-					final byte[] byteArray = ByteArrayUtils.gameToByteArray(gameList.get(gameName));
+					final byte[] byteArray = gameList.get(gameName);
 					t.sendResponseHeaders(HttpStatus.SC_OK, byteArray.length);
 					os.write(byteArray);
 				} else {
@@ -66,9 +68,19 @@ public class GameServer {
 	}
 
 	private static class ListGameHandler implements HttpHandler {
+		
+		private byte[] gameListToByteArray(final ArrayList<String> gameList) throws IOException {
+			try (final ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+				final ObjectOutput out = new ObjectOutputStream(bos);   
+				out.writeObject(gameList);
+				out.flush();
+				return bos.toByteArray();
+			}
+		}	
+			
 		public void handle(final HttpExchange t) throws IOException {
 			try (final OutputStream os = t.getResponseBody()) {
-				final byte[] byteArray = ByteArrayUtils.gameListToByteArray(new ArrayList<>(gameList.keySet()));
+				final byte[] byteArray = gameListToByteArray(new ArrayList<>(gameList.keySet()));
 				System.out.println("Game listed.");
 				t.sendResponseHeaders(HttpStatus.SC_OK, byteArray.length);
 				os.write(byteArray);
@@ -80,19 +92,17 @@ public class GameServer {
 
 	private static class CreateGameHandler implements HttpHandler {
 		public void handle(final HttpExchange t) throws IOException {
-			try (final OutputStream os = t.getResponseBody()) {
+			try {
 				final String gameName = t.getRequestHeaders().getFirst("gameName");
 				if (!gameList.containsKey(gameName)) {
-					final Game g = new Game("p1", "p2");
-					gameList.put(gameName, g);
+					final byte[] game = IOUtils.toByteArray(t.getRequestBody());					
+					gameList.put(gameName, game);
 					System.out.println("Game " + gameName + " created.");
-					final byte[] byteArray = ByteArrayUtils.gameToByteArray(g);
-					t.sendResponseHeaders(HttpStatus.SC_OK, byteArray.length);
-					os.write(byteArray);
+					t.sendResponseHeaders(HttpStatus.SC_OK, 0);
 				} else {
 					t.sendResponseHeaders(HttpStatus.SC_FORBIDDEN, 0);
 				}
-			} catch (final GameCreationException | IOException e) {
+			} catch (final IOException e) {
 				t.sendResponseHeaders(HttpStatus.SC_METHOD_FAILURE, 0);
 			}
 		}
@@ -101,9 +111,9 @@ public class GameServer {
 	private static class UpdateGameHandler implements HttpHandler {
 		public void handle(final HttpExchange t) throws IOException {
 			try {
-				final Game g = ByteArrayUtils.inputStreamToGame(t.getRequestBody());
+				final byte[] game = IOUtils.toByteArray(t.getRequestBody());
 				final String gameName = t.getRequestHeaders().getFirst("gameName");
-				gameList.put(gameName, g);
+				gameList.put(gameName, game);
 				System.out.println("Game " + gameName + " updated.");
 				t.sendResponseHeaders(HttpStatus.SC_OK, 0);
 			} catch (final IOException e) {
@@ -124,5 +134,6 @@ public class GameServer {
 			}
 		}
 	}
+
 
 }
