@@ -17,6 +17,12 @@ public class Player {
         this.hand = new Hand();
         this.playingPlayerType = playingPlayerType;
     }
+    
+    public Player(final String name, final PlayingPlayerType playingPlayerType, final Hand hand) {
+        this.name = name;
+        this.hand = hand;
+        this.playingPlayerType = playingPlayerType;
+    }
 
     public String getName() {
         return name;

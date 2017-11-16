@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.boardgames.bastien.schotten_totten.exceptions.HandFullException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Created by Bastien on 28/11/2016.
@@ -19,6 +21,11 @@ public class Hand {
 
     public Hand() {
         cards = new ArrayList<>();
+    }
+    
+    public Hand(final List<Card> cards, final int drawnCardIndex) {
+        this.cards = cards;
+        this.drawnCardIndex = drawnCardIndex;
     }
 
     public void addCard(final Card c) throws HandFullException {
@@ -39,6 +46,7 @@ public class Hand {
         return cards.remove(i);
     }
 
+    @JsonIgnore
     public int getHandSize() {
         return cards.size();
     }

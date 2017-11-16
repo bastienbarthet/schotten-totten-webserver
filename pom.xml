@@ -8,6 +8,7 @@
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
 	</properties>
+	
 	<repositories>
 		<repository>
 			<id>jitpack.io</id>
@@ -51,7 +52,6 @@
 			<version>4.5.3</version>
 		</dependency>
 
-
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -67,56 +67,34 @@
 			<version>4.0</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.9.2</version>
+		</dependency>
 
-
-		<!-- <dependency> -->
-		<!-- <groupId>com.github.bastienbarthet</groupId> -->
-		<!-- <artifactId>schotten-totten</artifactId> -->
-		<!-- <version>1.0</version> -->
-		<!-- </dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.github.bastienbarthet</groupId> -->
+<!-- 			<artifactId>schotten-totten</artifactId> -->
+<!-- 			<version>master-SNAPSHOT</version> -->
+<!-- 		</dependency> -->
 
 	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.6.1</version>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>1.5.9.RELEASE</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<mainClass>server.RestGameServer</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>server.RestGameServer</mainClass>
-						</manifest>
-					</archive>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
+					<fork>true</fork>
+					<mainClass>server.RestGameServer</mainClass>
 				</configuration>
 				<executions>
 					<execution>
-						<id>make-assembly</id> <!-- this is used for inheritance merges -->
-						<phase>package</phase> <!-- bind to the packaging phase -->
 						<goals>
-							<goal>single</goal>
+							<goal>repackage</goal>
 						</goals>
 					</execution>
 				</executions>
