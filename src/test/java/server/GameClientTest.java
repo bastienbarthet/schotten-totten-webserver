@@ -18,7 +18,7 @@ public class GameClientTest {
 			final Game game = new Game("P1", "P2");
 			client.createdGame("test1" + System.currentTimeMillis(), game);
 			System.out.println(game.getPlayingPlayer().getName());
-		} catch (final HttpException | IOException | GameAlreadyExistsException | NoPlayerException | GameCreationException e) {
+		} catch (final HttpException | IOException | GameAlreadyExistsException | GameCreationException e) {
 			e.printStackTrace();
 			System.exit(-1);
 		}
