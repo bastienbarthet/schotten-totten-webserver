@@ -22,7 +22,6 @@ public class GameClient {
 		serverUrl = url;
 	}
 
-
 	public void createdGame(final String gameName, final Game game) throws HttpException, IOException, GameAlreadyExistsException {
 		final HttpClient client = HttpClients.createDefault();
 		// post
