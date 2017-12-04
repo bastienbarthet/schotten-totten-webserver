@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.boardgames.bastien.schotten_totten.exceptions.EmptyDeckException;
-import com.boardgames.bastien.schotten_totten.exceptions.GameCreationException;
-import com.boardgames.bastien.schotten_totten.exceptions.HandFullException;
-import com.boardgames.bastien.schotten_totten.exceptions.MilestoneSideMaxReachedException;
-import com.boardgames.bastien.schotten_totten.exceptions.NoPlayerException;
-import com.boardgames.bastien.schotten_totten.exceptions.NotYourTurnException;
-import com.boardgames.bastien.schotten_totten.model.Card;
-import com.boardgames.bastien.schotten_totten.model.Game;
-import com.boardgames.bastien.schotten_totten.model.Milestone;
-import com.boardgames.bastien.schotten_totten.model.Player;
-import com.boardgames.bastien.schotten_totten.model.PlayingPlayerType;
+import com.utils.bastien.schotten_totten.exceptions.EmptyDeckException;
+import com.utils.bastien.schotten_totten.exceptions.GameCreationException;
+import com.utils.bastien.schotten_totten.exceptions.HandFullException;
+import com.utils.bastien.schotten_totten.exceptions.MilestoneSideMaxReachedException;
+import com.utils.bastien.schotten_totten.exceptions.NoPlayerException;
+import com.utils.bastien.schotten_totten.exceptions.NotYourTurnException;
+import com.utils.bastien.schotten_totten.model.Card;
+import com.utils.bastien.schotten_totten.model.Game;
+import com.utils.bastien.schotten_totten.model.Milestone;
+import com.utils.bastien.schotten_totten.model.Player;
+import com.utils.bastien.schotten_totten.model.PlayingPlayerType;
 
 @SpringBootApplication
 public class RestGameServer {
@@ -115,10 +115,11 @@ public class RestGameServer {
 	            try {
 	                game.getGameBoard().getMilestones().get(milestoneIndex).addCard(cardToPlay, p);
 	                game.getGameBoard().updateLastPlayedCard(cardToPlay);
-	                game.getPlayingPlayer().getHand().addCard(game.getGameBoard().getDeck().drawCard());
+	                game.getPlayingPlayer().getHand().addCard(
+	                		game.getGameBoard().getDeck().drawCard(), indexInPlayingPlayerHand);
 	                game.swapPlayingPlayerType();
 	            } catch (final MilestoneSideMaxReachedException e) {
-	                game.getPlayingPlayer().getHand().addCard(cardToPlay);
+	                game.getPlayingPlayer().getHand().addCard(cardToPlay, indexInPlayingPlayerHand);
 	                throw e;
 	            }
 
