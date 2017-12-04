@@ -12,7 +12,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.HttpClients;
 
-import com.boardgames.bastien.schotten_totten.model.Game;
+import com.utils.bastien.schotten_totten.model.Game;
 
 public class GameClient {
 

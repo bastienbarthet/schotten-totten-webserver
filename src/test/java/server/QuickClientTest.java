@@ -6,16 +6,15 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.web.client.RestTemplate;
 
-import com.boardgames.bastien.schotten_totten.exceptions.HandFullException;
-import com.boardgames.bastien.schotten_totten.model.Card;
-import com.boardgames.bastien.schotten_totten.model.Card.COLOR;
-import com.boardgames.bastien.schotten_totten.model.Card.NUMBER;
-import com.boardgames.bastien.schotten_totten.model.Hand;
-import com.boardgames.bastien.schotten_totten.model.Milestone;
-import com.boardgames.bastien.schotten_totten.model.Player;
-import com.boardgames.bastien.schotten_totten.model.PlayingPlayerType;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.utils.bastien.schotten_totten.exceptions.HandFullException;
+import com.utils.bastien.schotten_totten.model.Card;
+import com.utils.bastien.schotten_totten.model.Card.COLOR;
+import com.utils.bastien.schotten_totten.model.Card.NUMBER;
+import com.utils.bastien.schotten_totten.model.Hand;
+import com.utils.bastien.schotten_totten.model.Milestone;
+import com.utils.bastien.schotten_totten.model.Player;
+import com.utils.bastien.schotten_totten.model.PlayingPlayerType;
 
 public class QuickClientTest {
 
@@ -58,7 +57,7 @@ public class QuickClientTest {
 		System.out.println(c.getColor().name() + "-" + c.getNumber().name());
 
 		final Hand handForTest = new Hand();
-		handForTest.addCard(c);
+		handForTest.addCard(c, 0);
 		final String hand = mapper.writeValueAsString(handForTest);
 		System.out.println(hand);
 		final Hand h = mapper.readValue(hand, Hand.class);

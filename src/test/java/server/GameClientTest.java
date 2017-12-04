@@ -5,9 +5,8 @@ import java.util.ArrayList;
 
 import org.apache.http.HttpException;
 
-import com.boardgames.bastien.schotten_totten.exceptions.GameCreationException;
-import com.boardgames.bastien.schotten_totten.exceptions.NoPlayerException;
-import com.boardgames.bastien.schotten_totten.model.Game;
+import com.utils.bastien.schotten_totten.exceptions.GameCreationException;
+import com.utils.bastien.schotten_totten.model.Game;
 
 public class GameClientTest {
 
