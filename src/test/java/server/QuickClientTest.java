@@ -6,15 +6,15 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.web.client.RestTemplate;
 
+import com.boradgames.bastien.schotten_totten.core.exceptions.HandFullException;
+import com.boradgames.bastien.schotten_totten.core.model.Card;
+import com.boradgames.bastien.schotten_totten.core.model.Card.COLOR;
+import com.boradgames.bastien.schotten_totten.core.model.Card.NUMBER;
+import com.boradgames.bastien.schotten_totten.core.model.Hand;
+import com.boradgames.bastien.schotten_totten.core.model.Milestone;
+import com.boradgames.bastien.schotten_totten.core.model.Player;
+import com.boradgames.bastien.schotten_totten.core.model.PlayingPlayerType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.utils.bastien.schotten_totten.exceptions.HandFullException;
-import com.utils.bastien.schotten_totten.model.Card;
-import com.utils.bastien.schotten_totten.model.Card.COLOR;
-import com.utils.bastien.schotten_totten.model.Card.NUMBER;
-import com.utils.bastien.schotten_totten.model.Hand;
-import com.utils.bastien.schotten_totten.model.Milestone;
-import com.utils.bastien.schotten_totten.model.Player;
-import com.utils.bastien.schotten_totten.model.PlayingPlayerType;
 
 public class QuickClientTest {
 

@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.utils.bastien.schotten_totten.exceptions.EmptyDeckException;
-import com.utils.bastien.schotten_totten.exceptions.GameCreationException;
-import com.utils.bastien.schotten_totten.exceptions.HandFullException;
-import com.utils.bastien.schotten_totten.exceptions.MilestoneSideMaxReachedException;
-import com.utils.bastien.schotten_totten.exceptions.NoPlayerException;
-import com.utils.bastien.schotten_totten.exceptions.NotYourTurnException;
-import com.utils.bastien.schotten_totten.model.Card;
-import com.utils.bastien.schotten_totten.model.Game;
-import com.utils.bastien.schotten_totten.model.Milestone;
-import com.utils.bastien.schotten_totten.model.Player;
-import com.utils.bastien.schotten_totten.model.PlayingPlayerType;
+import com.boradgames.bastien.schotten_totten.core.exceptions.EmptyDeckException;
+import com.boradgames.bastien.schotten_totten.core.exceptions.GameCreationException;
+import com.boradgames.bastien.schotten_totten.core.exceptions.HandFullException;
+import com.boradgames.bastien.schotten_totten.core.exceptions.MilestoneSideMaxReachedException;
+import com.boradgames.bastien.schotten_totten.core.exceptions.NoPlayerException;
+import com.boradgames.bastien.schotten_totten.core.exceptions.NotYourTurnException;
+import com.boradgames.bastien.schotten_totten.core.model.Card;
+import com.boradgames.bastien.schotten_totten.core.model.Game;
+import com.boradgames.bastien.schotten_totten.core.model.Milestone;
+import com.boradgames.bastien.schotten_totten.core.model.Player;
+import com.boradgames.bastien.schotten_totten.core.model.PlayingPlayerType;
 
 @SpringBootApplication
 public class RestGameServer {

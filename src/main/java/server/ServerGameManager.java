@@ -1,8 +1,8 @@
 package server;
 
-import com.utils.bastien.schotten_totten.controllers.SimpleGameManager;
-import com.utils.bastien.schotten_totten.exceptions.GameCreationException;
-import com.utils.bastien.schotten_totten.model.Game;
+import com.boradgames.bastien.schotten_totten.core.controllers.SimpleGameManager;
+import com.boradgames.bastien.schotten_totten.core.exceptions.GameCreationException;
+import com.boradgames.bastien.schotten_totten.core.model.Game;
 
 public class ServerGameManager extends SimpleGameManager {
 

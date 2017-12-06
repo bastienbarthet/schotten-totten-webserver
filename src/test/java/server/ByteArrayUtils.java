@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.entity.ByteArrayEntity;
 
-import com.utils.bastien.schotten_totten.model.Game;
+import com.boradgames.bastien.schotten_totten.core.model.Game;
 
 public class ByteArrayUtils {
 
