@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,11 +28,20 @@ import com.boradgames.bastien.schotten_totten.core.model.PlayingPlayerType;
 public class RestGameServer {
 	
 	private static Map<String, ServerGameManager> gameManagerMap;
+	private static ConfigurableApplicationContext context;
 
 	public static void main(String[] args) {
 		gameManagerMap = new HashMap<>();
-		SpringApplication.run(RestGameServer.class, args);
+		context = SpringApplication.run(RestGameServer.class, args);
 	}
+	
+    public static boolean isActive() {
+        return (context != null && context.isActive());
+    }
+
+    public static void stop() {
+        SpringApplication.exit(context);
+    }
 
 	@RestController
 	private class Controlers {
