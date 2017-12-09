@@ -50,6 +50,11 @@ public class RestGameController {
 		}
 	}
 	
+	@RequestMapping("/deleteGame")
+	public Boolean deleteGame(@RequestParam(value="gamename") String gamename) {
+		return gameManagerMap.remove(gamename) != null;
+	}
+	
     @RequestMapping("/reclaimMilestone")
     public boolean reclaimMilestone(
     		@RequestParam(value="gamename") String gamename, 
@@ -68,6 +73,11 @@ public class RestGameController {
     @RequestMapping("/getPlayingPlayer")
     public Player getPlayingPlayer(@RequestParam(value="gamename") String gamename) {
         return gameManagerMap.get(gamename).getPlayingPlayer();
+    }
+    
+    @RequestMapping("/swapPlayers")
+    public Boolean swapPlayers(@RequestParam(value="gamename") String gamename) {
+        return gameManagerMap.get(gamename).swapPlayers();
     }
 
     @RequestMapping("/getWinner")
