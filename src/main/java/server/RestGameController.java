@@ -17,6 +17,7 @@ import com.boradgames.bastien.schotten_totten.core.exceptions.HandFullException;
 import com.boradgames.bastien.schotten_totten.core.exceptions.MilestoneSideMaxReachedException;
 import com.boradgames.bastien.schotten_totten.core.exceptions.NoPlayerException;
 import com.boradgames.bastien.schotten_totten.core.exceptions.NotYourTurnException;
+import com.boradgames.bastien.schotten_totten.core.model.Card;
 import com.boradgames.bastien.schotten_totten.core.model.Milestone;
 import com.boradgames.bastien.schotten_totten.core.model.Player;
 import com.boradgames.bastien.schotten_totten.core.model.PlayingPlayerType;
@@ -73,6 +74,11 @@ public class RestGameController {
     @RequestMapping("/getPlayingPlayer")
     public Player getPlayingPlayer(@RequestParam(value="gamename") String gamename) {
         return gameManagerMap.get(gamename).getPlayingPlayer();
+    }
+    
+    @RequestMapping("/getLastPlayedCard")
+    public Card getLastPlayedCard(@RequestParam(value="gamename") String gamename) {
+        return gameManagerMap.get(gamename).getLastPlayedCard();
     }
     
     @RequestMapping("/swapPlayers")
