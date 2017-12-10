@@ -28,13 +28,11 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>com.github.schotten-totten-company</groupId>
 			<artifactId>schotten-totten-core</artifactId>
 			<version>master-SNAPSHOT</version>
 		</dependency>
-
 	</dependencies>
 	<build>
 		<plugins>
