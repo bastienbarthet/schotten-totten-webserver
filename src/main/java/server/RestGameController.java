@@ -1,5 +1,6 @@
 package server;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +50,11 @@ public class RestGameController {
 				return false;
 			}
 		}
+	}
+	
+	@RequestMapping("/listGames")
+	public List<String> createGame() {
+		return new ArrayList<String>(gameManagerMap.keySet());
 	}
 	
 	@RequestMapping("/deleteGame")
