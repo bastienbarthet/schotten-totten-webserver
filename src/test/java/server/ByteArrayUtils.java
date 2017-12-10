@@ -11,8 +11,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.http.entity.ByteArrayEntity;
-
 import com.boradgames.bastien.schotten_totten.core.model.Game;
 
 public class ByteArrayUtils {
@@ -37,10 +35,6 @@ public class ByteArrayUtils {
 			out.flush();
 			return bos.toByteArray();
 		}
-	}
-	
-	public static ByteArrayEntity gameToByteArrayEntity(final Game g) throws IOException {
-		return new ByteArrayEntity(gameToByteArray(g));
 	}
 	
 	public static Game inputStreamToGame(final InputStream is) throws IOException {
