@@ -34,7 +34,6 @@
 			<artifactId>schotten-totten-core</artifactId>
 			<version>master-SNAPSHOT</version>
 		</dependency>
-
 	</dependencies>
 	<build>
 		<plugins>

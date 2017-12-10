@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import com.boradgames.bastien.schotten_totten.core.exceptions.HandFullException;
@@ -49,6 +50,7 @@ public class QuickClientTest {
 	@Test
 	public void TestCreateGame() {
 		final RestTemplate rest = new RestTemplate();
+		rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 		final String gamename = "test-2" + System.currentTimeMillis();
 		final String url = "http://localhost:8080/createGame?gamename=" + gamename;
 		final Boolean result = rest.getForObject(url, Boolean.class);
