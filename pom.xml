@@ -38,6 +38,12 @@
 			<artifactId>schotten-totten-core</artifactId>
 			<version>master-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.4</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
