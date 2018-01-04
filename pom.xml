@@ -36,7 +36,7 @@
 		<dependency>
 			<groupId>com.github.schotten-totten-company</groupId>
 			<artifactId>schotten-totten-core</artifactId>
-			<version>1.2</version>
+			<version>1.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>

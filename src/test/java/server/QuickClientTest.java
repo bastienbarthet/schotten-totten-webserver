@@ -28,6 +28,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class QuickClientTest {
 
+	private final String baseUrl = "http://localhost:8080";
+	
 	@Before
 	public void Before() {
 		final String[] nothing = {};
@@ -44,7 +46,7 @@ public class QuickClientTest {
 	@Test
 	public void TestPing() {
 		final RestTemplate rest = new RestTemplate();
-		final String result = rest.getForObject("http://localhost:8080/ping", String.class).toString();
+		final String result = rest.getForObject(baseUrl + "/ping", String.class).toString();
 		System.out.println(result);
 		Assert.assertTrue(result.contains("it is time to SCHOTTEN !!!!"));
 	}
@@ -54,7 +56,7 @@ public class QuickClientTest {
 		final RestTemplate rest = new RestTemplate();
 		rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 		final String gamename = "test-2" + System.currentTimeMillis();
-		final String url = "http://localhost:8080/createGame?gamename=" + gamename;
+		final String url = baseUrl + "/createGame?gamename=" + gamename;
 		final Boolean result = rest.getForObject(url, Boolean.class);
 		//		System.out.println(result);
 		Assert.assertTrue(result);
@@ -64,13 +66,13 @@ public class QuickClientTest {
 	public void TestListGame() {
 		final RestTemplate rest = new RestTemplate();
 		rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-		final String url = "http://localhost:8080/createGame?gamename=" + "test-1";
+		final String url = baseUrl + "/createGame?gamename=" + "test-1";
 		Assert.assertTrue(rest.getForObject(url, Boolean.class));
-		final String url2 = "http://localhost:8080/createGame?gamename=" + "test-2";
+		final String url2 = baseUrl + "/createGame?gamename=" + "test-2";
 		Assert.assertTrue(rest.getForObject(url2, Boolean.class));
 
 		// list
-		final String urlList = "http://localhost:8080/listGames";
+		final String urlList = baseUrl + "/listGames";
 		final ResponseEntity<String[]> list = rest.getForEntity(urlList, String[].class);
         final List<String> resultAsList =  Arrays.asList(list.getBody());
 		Assert.assertTrue(resultAsList.contains("test-1"));
@@ -82,12 +84,12 @@ public class QuickClientTest {
 		final RestTemplate rest = new RestTemplate();
 		rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 		final String gamename = "test-2" + System.currentTimeMillis();
-		final String url = "http://localhost:8080/createGame?gamename=" + gamename;
+		final String url = baseUrl + "/createGame?gamename=" + gamename;
 		final Boolean result = rest.getForObject(url, Boolean.class);
 		Assert.assertTrue(result);
 		
 		// delete
-		final String urlDelete = "http://localhost:8080/deleteGame?gamename=" + gamename;
+		final String urlDelete = url + "/deleteGame?gamename=" + gamename;
 		Assert.assertTrue(rest.getForObject(urlDelete, Boolean.class));
 	}
 	
@@ -96,12 +98,12 @@ public class QuickClientTest {
 		final RestTemplate rest = new RestTemplate();
 		rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 		final String gamename = "test-gest" + System.currentTimeMillis();
-		final String url = "http://localhost:8080/createGame?gamename=" + gamename;
+		final String url = baseUrl + "/createGame?gamename=" + gamename;
 		final Boolean result = rest.getForObject(url, Boolean.class);
 		Assert.assertTrue(result);
 		
 		// get game
-		final String urlGet = "http://localhost:8080/getGame?gamename=" + gamename;
+		final String urlGet = baseUrl + "/getGame?gamename=" + gamename;
 		final Game game = rest.getForObject(urlGet, Game.class);
 		Assert.assertNotNull(game);
 		Assert.assertEquals(PlayingPlayerType.ONE, game.getPlayingPlayer().getPlayerType());
@@ -112,12 +114,12 @@ public class QuickClientTest {
 		final RestTemplate rest = new RestTemplate();
 		rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 		final String gamename = "test-gest" + System.currentTimeMillis();
-		final String url = "http://localhost:8080/createGame?gamename=" + gamename;
+		final String url = baseUrl + "/createGame?gamename=" + gamename;
 		final Boolean result = rest.getForObject(url, Boolean.class);
 		Assert.assertTrue(result);
 		
 		// get game
-		final String urlGet = "http://localhost:8080/getPlayingPlayer?gamename=" + gamename;
+		final String urlGet = baseUrl + "/getPlayingPlayer?gamename=" + gamename;
 		final Player player = rest.getForObject(urlGet, Player.class);
 		Assert.assertNotNull(player);
 		Assert.assertEquals(PlayingPlayerType.ONE, player.getPlayerType());
@@ -128,12 +130,12 @@ public class QuickClientTest {
 		final RestTemplate rest = new RestTemplate();
 		rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 		final String gamename = "test-gest" + System.currentTimeMillis();
-		final String url = "http://localhost:8080/createGame?gamename=" + gamename;
+		final String url = baseUrl + "/createGame?gamename=" + gamename;
 		final Boolean result = rest.getForObject(url, Boolean.class);
 		Assert.assertTrue(result);
 		
 		// get game
-		final String urlGet = "http://localhost:8080/getGame?gamename=" + gamename;
+		final String urlGet = baseUrl + "/getGame?gamename=" + gamename;
 		final Game game = rest.getForObject(urlGet, Game.class);
 		Assert.assertNotNull(game);
 		Assert.assertEquals(PlayingPlayerType.ONE, game.getPlayingPlayer().getPlayerType());
@@ -143,7 +145,7 @@ public class QuickClientTest {
 		// send
 		final String writeValueAsString = new ObjectMapper().writeValueAsString(game);
 		//System.out.println("JSON: " + writeValueAsString);
-		final String urlUpdate = "http://localhost:8080/updateGame?gamename=" + gamename;
+		final String urlUpdate = baseUrl + "/updateGame?gamename=" + gamename;
 		final HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		final HttpEntity<String> entity = new HttpEntity<String>(writeValueAsString, headers);
