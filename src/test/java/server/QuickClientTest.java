@@ -8,7 +8,9 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
@@ -17,11 +19,11 @@ import com.boradgames.bastien.schotten_totten.core.exceptions.HandFullException;
 import com.boradgames.bastien.schotten_totten.core.model.Card;
 import com.boradgames.bastien.schotten_totten.core.model.Card.COLOR;
 import com.boradgames.bastien.schotten_totten.core.model.Card.NUMBER;
+import com.boradgames.bastien.schotten_totten.core.model.Game;
 import com.boradgames.bastien.schotten_totten.core.model.Hand;
-import com.boradgames.bastien.schotten_totten.core.model.Milestone;
-import com.boradgames.bastien.schotten_totten.core.model.MilestonePlayerType;
 import com.boradgames.bastien.schotten_totten.core.model.Player;
 import com.boradgames.bastien.schotten_totten.core.model.PlayingPlayerType;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class QuickClientTest {
@@ -56,45 +58,102 @@ public class QuickClientTest {
 		final Boolean result = rest.getForObject(url, Boolean.class);
 		//		System.out.println(result);
 		Assert.assertTrue(result);
+	}
+	
+	@Test
+	public void TestListGame() {
+		final RestTemplate rest = new RestTemplate();
+		rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+		final String url = "http://localhost:8080/createGame?gamename=" + "test-1";
+		Assert.assertTrue(rest.getForObject(url, Boolean.class));
+		final String url2 = "http://localhost:8080/createGame?gamename=" + "test-2";
+		Assert.assertTrue(rest.getForObject(url2, Boolean.class));
 
-		// get milestones
-		final String getMilestones = "http://localhost:8080/getMilestones?gamename=" + gamename;
-
-		final List<Milestone> milestones = Arrays.asList(rest.getForEntity(getMilestones, Milestone[].class).getBody());
-		for (final Milestone m : milestones) {
-			//			System.out.println(m.getCaptured().toString());
-			Assert.assertEquals(MilestonePlayerType.NONE, m.getCaptured());
-		}
-
-		//		// get the last played card
-		//		final String getlastPlayedCard = "http://localhost:8080/getLastPlayedCard?gamename=" + gamename;
-		//		final Card card = rest.getForObject(getlastPlayedCard, Card.class);
-		//		System.out.println(card.getColor().toString() + "-" + card.getNumber().toString());
-
-		// get the player
-		final String getPlayingPlayer = "http://localhost:8080/getPlayingPlayer?gamename=" + gamename;
-		final Player player = rest.getForObject(getPlayingPlayer, Player.class);
-		//		System.out.println(player.getName() + " - " + player.getPlayerType().toString());
-		Assert.assertEquals(PlayingPlayerType.ONE, player.getPlayerType());
-		Assert.assertEquals("Player 1", player.getName());
-
-		final ResponseEntity<Boolean> resultPlay = rest.getForEntity("http://localhost:8080/playerPlays?"
-				+ "gamename=" + gamename
-				+ "&p=" + PlayingPlayerType.ONE.toString()
-				+ "&indexInPlayingPlayerHand=" + 0
-				+ "&milestoneIndex=" + 0, Boolean.class);
-
-		Assert.assertEquals(HttpStatus.OK, resultPlay.getStatusCode());
-		Assert.assertTrue(resultPlay.getBody().booleanValue());
+		// list
+		final String urlList = "http://localhost:8080/listGames";
+		final ResponseEntity<String[]> list = rest.getForEntity(urlList, String[].class);
+        final List<String> resultAsList =  Arrays.asList(list.getBody());
+		Assert.assertTrue(resultAsList.contains("test-1"));
+		Assert.assertTrue(resultAsList.contains("test-2"));
+	}
+	
+	@Test
+	public void TestDeleteGame() {
+		final RestTemplate rest = new RestTemplate();
+		rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+		final String gamename = "test-2" + System.currentTimeMillis();
+		final String url = "http://localhost:8080/createGame?gamename=" + gamename;
+		final Boolean result = rest.getForObject(url, Boolean.class);
+		Assert.assertTrue(result);
 		
-//		final ResponseEntity<Boolean> resultPlay2 = rest.getForEntity("http://localhost:8080/playerPlays?"
-//				+ "gamename=" + gamename
-//				+ "&p=" + PlayingPlayerType.TWO.toString()
-//				+ "&indexInPlayingPlayerHand=" + 0
-//				+ "&milestoneIndex=" + 0, Boolean.class);
-//
-//		Assert.assertEquals(HttpStatus.UNAUTHORIZED, resultPlay2.getStatusCode());
-//		Assert.assertFalse(resultPlay2.getBody().booleanValue());
+		// delete
+		final String urlDelete = "http://localhost:8080/deleteGame?gamename=" + gamename;
+		Assert.assertTrue(rest.getForObject(urlDelete, Boolean.class));
+	}
+	
+	@Test
+	public void TestGetGame() {
+		final RestTemplate rest = new RestTemplate();
+		rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+		final String gamename = "test-gest" + System.currentTimeMillis();
+		final String url = "http://localhost:8080/createGame?gamename=" + gamename;
+		final Boolean result = rest.getForObject(url, Boolean.class);
+		Assert.assertTrue(result);
+		
+		// get game
+		final String urlGet = "http://localhost:8080/getGame?gamename=" + gamename;
+		final Game game = rest.getForObject(urlGet, Game.class);
+		Assert.assertNotNull(game);
+		Assert.assertEquals(PlayingPlayerType.ONE, game.getPlayingPlayer().getPlayerType());
+	}
+	
+	@Test
+	public void TestGetPlayingPlayer() throws JsonProcessingException {
+		final RestTemplate rest = new RestTemplate();
+		rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+		final String gamename = "test-gest" + System.currentTimeMillis();
+		final String url = "http://localhost:8080/createGame?gamename=" + gamename;
+		final Boolean result = rest.getForObject(url, Boolean.class);
+		Assert.assertTrue(result);
+		
+		// get game
+		final String urlGet = "http://localhost:8080/getPlayingPlayer?gamename=" + gamename;
+		final Player player = rest.getForObject(urlGet, Player.class);
+		Assert.assertNotNull(player);
+		Assert.assertEquals(PlayingPlayerType.ONE, player.getPlayerType());
+	}
+	
+	@Test
+	public void TestUpdateGame() throws JsonProcessingException {
+		final RestTemplate rest = new RestTemplate();
+		rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+		final String gamename = "test-gest" + System.currentTimeMillis();
+		final String url = "http://localhost:8080/createGame?gamename=" + gamename;
+		final Boolean result = rest.getForObject(url, Boolean.class);
+		Assert.assertTrue(result);
+		
+		// get game
+		final String urlGet = "http://localhost:8080/getGame?gamename=" + gamename;
+		final Game game = rest.getForObject(urlGet, Game.class);
+		Assert.assertNotNull(game);
+		Assert.assertEquals(PlayingPlayerType.ONE, game.getPlayingPlayer().getPlayerType());
+		
+		// swap
+		game.swapPlayingPlayerType();
+		// send
+		final String writeValueAsString = new ObjectMapper().writeValueAsString(game);
+		//System.out.println("JSON: " + writeValueAsString);
+		final String urlUpdate = "http://localhost:8080/updateGame?gamename=" + gamename;
+		final HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		final HttpEntity<String> entity = new HttpEntity<String>(writeValueAsString, headers);
+		Assert.assertTrue(rest.postForObject(urlUpdate, entity, Boolean.class));
+		
+		// get once again
+		final Game game2 = rest.getForObject(urlGet, Game.class);
+		Assert.assertNotNull(game2);
+		Assert.assertEquals(PlayingPlayerType.TWO, game2.getPlayingPlayer().getPlayerType());
+		
 	}
 
 	@Test
