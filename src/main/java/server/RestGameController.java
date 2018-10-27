@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,6 +32,7 @@ public class RestGameController {
 
 	@RequestMapping("/createGame")
 	public Boolean createGame(@RequestParam(value="gamename") String gamename) {
+		Logger.getLogger(getClass()).info("createGame");
 		if (gameMap.containsKey(gamename)) {
 			return false;
 		} else {
@@ -46,6 +48,7 @@ public class RestGameController {
 
 	@RequestMapping("/updateGame")
 	public Boolean updateGame(@RequestParam(value="gamename") String gamename, @RequestBody Game game) {
+		Logger.getLogger(getClass()).info("updateGame");
 		if (!gameMap.containsKey(gamename)) {
 			return false;
 		} else {
