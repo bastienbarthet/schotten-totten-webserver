@@ -1,6 +1,8 @@
 package server;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,6 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class QuickClientTest {
 
 	private final String baseUrl = "http://localhost:8080";
+//	private final String baseUrl = "https://schotten-totten.herokuapp.com";
 	
 	@Before
 	public void Before() {
@@ -143,13 +146,16 @@ public class QuickClientTest {
 		// swap
 		game.swapPlayingPlayerType();
 		// send
-		final String writeValueAsString = new ObjectMapper().writeValueAsString(game);
-		//System.out.println("JSON: " + writeValueAsString);
+//		final String writeValueAsString = new ObjectMapper().writeValueAsString(game);
+//		System.out.println("JSON: " + writeValueAsString);
 		final String urlUpdate = baseUrl + "/updateGame?gamename=" + gamename;
-		final HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		final HttpEntity<String> entity = new HttpEntity<String>(writeValueAsString, headers);
-		Assert.assertTrue(rest.postForObject(urlUpdate, entity, Boolean.class));
+//		final HttpHeaders headers = new HttpHeaders();
+//		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+//		headers.setContentType(MediaType.APPLICATION_JSON);
+//		headers.setContentLength(writeValueAsString.length());
+//		headers.setAcceptCharset(new ArrayList<Charset>(Charset.availableCharsets().values()));
+//		final HttpEntity<String> entity = new HttpEntity<String>(writeValueAsString, headers);
+		Assert.assertTrue(rest.postForObject(urlUpdate, game, Boolean.class));
 		
 		// get once again
 		final Game game2 = rest.getForObject(urlGet, Game.class);
