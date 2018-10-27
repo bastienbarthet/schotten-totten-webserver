@@ -44,6 +44,13 @@
 			<version>4.5.4</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.nanohttpd/nanohttpd-nanolets -->
+		<dependency>
+			<groupId>org.nanohttpd</groupId>
+			<artifactId>nanohttpd-nanolets</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
@@ -63,76 +70,6 @@
 					</execution>
 				</executions>
 			</plugin>
-<!-- 			<plugin> -->
-<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
-<!-- 				<artifactId>maven-surefire-plugin</artifactId> -->
-<!-- 				<version>2.20.1</version> -->
-<!-- 				<configuration> -->
-<!-- 					<systemPropertyVariables> -->
-<!-- 						<MAVEN_OPTS>-U</MAVEN_OPTS> -->
-<!-- 					</systemPropertyVariables> -->
-<!-- 				</configuration> -->
-<!-- 			</plugin> -->
-<!-- 			<plugin> -->
-<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
-<!-- 				<artifactId>maven-dependency-plugin</artifactId> -->
-<!-- 				<version>3.0.2</version> -->
-<!-- 				<executions> -->
-<!-- 					<execution> -->
-<!-- 						<id>purge-local-dependencies</id> -->
-<!-- 						<phase>install</phase> -->
-<!-- 						<goals> -->
-<!-- 							<goal>purge-local-repository</goal> -->
-<!-- 						</goals> -->
-<!-- 						<configuration> -->
-<!-- 							<snapshotsOnly>true</snapshotsOnly> -->
-<!-- 						</configuration> -->
-<!-- 					</execution> -->
-<!-- 				</executions> -->
-<!-- 			</plugin> -->
-			<!-- <plugin> -->
-			<!-- <groupId>org.apache.maven.plugins</groupId> -->
-			<!-- <artifactId>maven-compiler-plugin</artifactId> -->
-			<!-- <version>3.6.1</version> -->
-			<!-- <configuration> -->
-			<!-- <source>1.7</source> -->
-			<!-- <target>1.7</target> -->
-			<!-- </configuration> -->
-			<!-- </plugin> -->
-			<!-- <plugin> -->
-			<!-- <groupId>org.apache.maven.plugins</groupId> -->
-			<!-- <artifactId>maven-jar-plugin</artifactId> -->
-			<!-- <configuration> -->
-			<!-- <archive> -->
-			<!-- <manifest> -->
-			<!-- <addClasspath>true</addClasspath> -->
-			<!-- <mainClass>server.RestGameServer</mainClass> -->
-			<!-- </manifest> -->
-			<!-- </archive> -->
-			<!-- </configuration> -->
-			<!-- </plugin> -->
-			<!-- <plugin> -->
-			<!-- <artifactId>maven-assembly-plugin</artifactId> -->
-			<!-- <configuration> -->
-			<!-- <archive> -->
-			<!-- <manifest> -->
-			<!-- <mainClass>server.RestGameServer</mainClass> -->
-			<!-- </manifest> -->
-			<!-- </archive> -->
-			<!-- <descriptorRefs> -->
-			<!-- <descriptorRef>jar-with-dependencies</descriptorRef> -->
-			<!-- </descriptorRefs> -->
-			<!-- </configuration> -->
-			<!-- <executions> -->
-			<!-- <execution> -->
-			<!-- <id>make-assembly</id> this is used for inheritance merges -->
-			<!-- <phase>package</phase> bind to the packaging phase -->
-			<!-- <goals> -->
-			<!-- <goal>single</goal> -->
-			<!-- </goals> -->
-			<!-- </execution> -->
-			<!-- </executions> -->
-			<!-- </plugin> -->
 		</plugins>
 	</build>
 
