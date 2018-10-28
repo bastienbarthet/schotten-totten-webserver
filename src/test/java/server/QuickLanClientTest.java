@@ -26,7 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class QuickLanClientTest {
 
 	private final String baseUrl = "http://localhost:8080";
-	final LanGameServer lGameServer = new LanGameServer(8080);
+	private final LanGameServer lGameServer = new LanGameServer(8080);
 	
 	@Before
 	public void Before() throws IOException {
@@ -44,9 +44,8 @@ public class QuickLanClientTest {
 	public void TestPing() {
 		final RestTemplate rest = new RestTemplate();
 		final String forObject = rest.getForObject(baseUrl + "/ping", String.class);
-		final String result = forObject.toString();
-		System.out.println(result);
-		Assert.assertTrue(result.contains("it is time to SCHOTTEN !!!!"));
+		System.out.println(forObject);
+		Assert.assertTrue(forObject.contains("it is time to SCHOTTEN !!!!"));
 	}
 
 	@Test
