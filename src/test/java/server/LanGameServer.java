@@ -1,13 +1,10 @@
 package server;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.io.IOUtils;
 
 import com.boradgames.bastien.schotten_totten.core.exceptions.GameCreationException;
 import com.boradgames.bastien.schotten_totten.core.model.Game;
@@ -17,29 +14,30 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fi.iki.elonen.NanoHTTPD;
 
 public class LanGameServer extends NanoHTTPD {
-	
-	private static Map<String, Game> gameMap = new HashMap<>();
 
-    public LanGameServer(int port) {
-        super(port);
-    }
-    
-    private Response serializeObjectToResponse(final Object o) {
-    	try {
-			final String jsonObject = new ObjectMapper().writeValueAsString(o);
+	private final Map<String, Game> gameMap = new HashMap<>();
+	private final ObjectMapper objectMapper = new ObjectMapper();
+
+	public LanGameServer(int port) {
+		super(port);
+	}
+
+	private Response serializeObjectToResponse(final Object o) {
+		try {
+			final String jsonObject = objectMapper.writeValueAsString(o);
 			return NanoHTTPD.newFixedLengthResponse(Response.Status.OK, "application/json", jsonObject);
 		} catch (final JsonProcessingException e) {
 			return NanoHTTPD.newFixedLengthResponse(Response.Status.INTERNAL_ERROR, NanoHTTPD.MIME_PLAINTEXT, e.getMessage());
 		}
-    }
+	}
 
-    @Override
-    public Response serve(IHTTPSession session) {
+	@Override
+	public Response serve(IHTTPSession session) {
 
-        final Method method = session.getMethod();
-        switch (method) {
-        case GET:
-        	switch (session.getUri()) {
+		final Method method = session.getMethod();
+		switch (method) {
+		case GET:
+			switch (session.getUri()) {
 			case "/ping":
 				return NanoHTTPD.newFixedLengthResponse(Response.Status.OK, NanoHTTPD.MIME_PLAINTEXT, new Date().toString() + " - it is time to SCHOTTEN !!!!");
 			case "/createGame":
@@ -69,14 +67,20 @@ public class LanGameServer extends NanoHTTPD {
 		case POST:
 			switch (session.getUri()) {
 			case "/updateGame":
-				final String gamename = session.getParameters().get("gamename").get(0);
-				// TODO
-				final Game game = null;//session.getParameters().get("game").get(0);
-				if (!gameMap.containsKey(gamename)) {
-					return serializeObjectToResponse(Boolean.FALSE);
-				} else {
-					gameMap.put(gamename, game);
-					return serializeObjectToResponse(Boolean.TRUE);
+				try {
+					final String gamename = session.getParameters().get("gamename").get(0);
+					final HashMap<String, String> map = new HashMap<String, String>();
+					session.parseBody(map);
+					final String jsonGame = map.get("postData");
+					final Game game = objectMapper.readValue(jsonGame, Game.class);
+					if (!gameMap.containsKey(gamename)) {
+						return serializeObjectToResponse(Boolean.FALSE);
+					} else {
+						gameMap.put(gamename, game);
+						return serializeObjectToResponse(Boolean.TRUE);
+					}
+				} catch (IOException | ResponseException e) {
+					return newFixedLengthResponse(Response.Status.INTERNAL_ERROR, NanoHTTPD.MIME_PLAINTEXT, e.getMessage());
 				}
 			default:
 				return newFixedLengthResponse(Response.Status.METHOD_NOT_ALLOWED, NanoHTTPD.MIME_PLAINTEXT, session.getUri() + " not supported.");
@@ -84,7 +88,7 @@ public class LanGameServer extends NanoHTTPD {
 		default:
 			return newFixedLengthResponse(Response.Status.METHOD_NOT_ALLOWED, NanoHTTPD.MIME_PLAINTEXT, method + " not supported.");
 		}
-        
-    }
+
+	}
 
 }
