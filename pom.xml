@@ -5,8 +5,8 @@
 	<artifactId>schotten-totten-webserver</artifactId>
 	<version>1.0</version>
 	<properties>
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
 	<repositories>
@@ -36,7 +36,7 @@
 		<dependency>
 			<groupId>com.github.schotten-totten-company</groupId>
 			<artifactId>schotten-totten-core</artifactId>
-			<version>1.6</version>
+			<version>1.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
