@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar target/schotten-totten-webserver-1.0.jar
+web: java -Dserver.port=$PORT -jar target/schotten-totten-webserver-1.1.jar
